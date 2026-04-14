@@ -1,27 +1,45 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Maximize2, X } from "lucide-react";
-import { useState } from "react";
+import { Maximize2, Minimize2, X, ExternalLink } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export function GamePlayer({ game, onClose }) {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
+  useEffect(() => {
+    const handleFullScreenChange = () => {
+      setIsFullScreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullScreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullScreenChange);
+    };
+  }, []);
+
   if (!game) return null;
 
-  const toggleFullScreen = () => {
+  const toggleFullScreen = async () => {
     const iframe = document.getElementById("game-iframe");
-    if (iframe) {
-      if (!isFullScreen) {
+    if (!iframe) return;
+
+    try {
+      if (!document.fullscreenElement) {
         if (iframe.requestFullscreen) {
-          iframe.requestFullscreen();
+          await iframe.requestFullscreen();
         }
       } else {
         if (document.exitFullscreen) {
-          document.exitFullscreen();
+          await document.exitFullscreen();
         }
       }
-      setIsFullScreen(!isFullScreen);
+    } catch (error) {
+      console.warn("Fullscreen operation failed:", error);
     }
+  };
+
+  const openInNewTab = () => {
+    window.open(game.iframeUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -40,10 +58,19 @@ export function GamePlayer({ game, onClose }) {
             <Button
               variant="ghost"
               size="icon"
+              onClick={openInNewTab}
+              title="Open in new tab"
+              className="text-zinc-400 hover:text-white hover:bg-white/10"
+            >
+              <ExternalLink className="w-4 h-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={toggleFullScreen}
               className="text-zinc-400 hover:text-white hover:bg-white/10"
             >
-              <Maximize2 className="w-4 h-4" />
+              {isFullScreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </Button>
             <Button
               variant="ghost"
@@ -60,7 +87,8 @@ export function GamePlayer({ game, onClose }) {
             id="game-iframe"
             src={game.iframeUrl}
             className="w-full h-full border-none"
-            allow="autoplay; fullscreen; keyboard"
+            allow="autoplay; fullscreen; picture-in-picture; cross-origin-isolated"
+            referrerPolicy="no-referrer"
             title={game.title}
           />
         </div>

@@ -8,32 +8,34 @@ export const GameCard = ({ game, onPlay }) => {
     <motion.div
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 300 }}
+      className="h-full"
     >
-      <Card className="overflow-hidden h-full flex flex-col border border-border bg-card hover:border-primary/50 transition-all duration-300 rounded-2xl group">
-        <div className="relative h-[140px] overflow-hidden bg-zinc-800 flex items-center justify-center">
-          <img
-            src={game.thumbnail}
-            alt={game.title}
-            className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+      <Card className="overflow-hidden h-full flex flex-col border border-border bg-card hover:border-primary/50 transition-all duration-300 rounded-2xl group cursor-pointer" onClick={() => onPlay(game)}>
+        {game.thumbnail && (
+          <div className="relative h-[160px] overflow-hidden bg-zinc-800">
+            <img
+              src={game.thumbnail}
+              alt={game.title}
+              className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          </div>
+        )}
+        <CardHeader className="p-6 flex-1 flex flex-col justify-between">
+          <div>
+            <CardTitle className="text-xl font-bold tracking-tight mb-2">{game.title}</CardTitle>
+            <div className="flex items-center justify-between text-sm text-secondary-foreground">
+              <span>{game.category}</span>
+            </div>
+          </div>
+          <div className="mt-4">
             <Button 
               size="sm" 
-              onClick={() => onPlay(game)} 
-              className="bg-primary text-white hover:bg-primary/90 font-bold text-xs px-4 py-2 rounded-md"
+              className="w-full bg-primary text-white hover:bg-primary/90 font-bold text-xs py-2 rounded-xl"
             >
-              PLAY
+              PLAY NOW
             </Button>
-          </div>
-        </div>
-        <CardHeader className="p-5 space-y-1">
-          <CardTitle className="text-base font-semibold tracking-tight">{game.title}</CardTitle>
-          <div className="flex items-center justify-between text-xs text-secondary-foreground">
-            <span>{game.category}</span>
-            <span className="flex items-center gap-1">
-              <span className="text-yellow-500">★</span> 4.8/5
-            </span>
           </div>
         </CardHeader>
       </Card>

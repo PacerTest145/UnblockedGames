@@ -35,7 +35,7 @@ export default function App() {
         <div className="container mx-auto px-10 h-full flex items-center justify-between gap-8">
           <div className="flex items-center gap-2">
             <div className="text-2xl font-extrabold tracking-tighter">
-              NEXUS<span className="text-primary">HUB</span>
+              BIG P <span className="text-primary">GAMES</span>
             </div>
           </div>
 
@@ -51,9 +51,6 @@ export default function App() {
           </div>
 
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-secondary-foreground">
-            <a href="#" className="hover:text-foreground transition-colors">Trending</a>
-            <a href="#" className="hover:text-foreground transition-colors">Requests</a>
-            <a href="#" className="hover:text-foreground transition-colors">About</a>
           </nav>
         </div>
       </header>
@@ -91,22 +88,6 @@ export default function App() {
 
         {/* Main Content Area */}
         <main className="flex-1 p-10 overflow-y-auto">
-          {/* Featured Banner */}
-          {!selectedCategory && !searchQuery && (
-            <section className="mb-10">
-              <div className="relative h-[180px] rounded-[20px] overflow-hidden bg-gradient-to-r from-indigo-500 to-purple-600 p-10 flex flex-col justify-center">
-                <h2 className="text-4xl font-bold mb-2">Pixel Drifter Z</h2>
-                <p className="text-lg opacity-90">New Season: Tokyo Nights is now live.</p>
-                <Button 
-                  className="absolute right-10 bg-white text-black hover:bg-white/90 rounded-full px-8 py-6 font-bold uppercase text-sm tracking-wide"
-                  onClick={() => setActiveGame(games.find(g => g.id === '2048') || games[0])}
-                >
-                  Play Now
-                </Button>
-              </div>
-            </section>
-          )}
-
           <h2 className="text-3xl font-bold mb-8">
             {selectedCategory || (searchQuery ? `Search: ${searchQuery}` : "All Games")}
           </h2>
