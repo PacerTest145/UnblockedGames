@@ -11,6 +11,18 @@ export default defineConfig(({mode}) => {
   return {
     base: './',
     plugins: [react(), tailwindcss()],
+    optimizeDeps: {
+      esbuildOptions: {
+        loader: {
+          '.js': 'jsx',
+        },
+      },
+    },
+    esbuild: {
+      loader: 'jsx',
+      include: /.*\.js$/,
+      exclude: [],
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
